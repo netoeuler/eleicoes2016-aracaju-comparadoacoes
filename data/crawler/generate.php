@@ -5,7 +5,7 @@ include_once './Candidato.php';
 
 $doacoes = [];
 
-$candidatos = json_decode(file_get_contents('../candidatos.json'));
+$candidatos = json_decode(file_get_contents('../candidatos_backup.json'));
 
 // Apagar conteúdo sobre candidatos
 file_put_contents('../candidatos.json', '');

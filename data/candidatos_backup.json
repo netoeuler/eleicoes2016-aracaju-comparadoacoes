@@ -1,0 +1,51 @@
+[
+  {
+    "id": "260000001548",
+    "nome": "DR. EMERSON",
+    "numero": "18",
+    "partido": "REDE",
+    "slogan": "REDE" 
+  },
+  {
+    "id": "260000002214",
+    "nome": "EDVALDO NOGUEIRA",
+    "numero": "65",
+    "partido": "PC do B",
+    "slogan": "PRA ARACAJU TER QUALIDADE DE VIDA"
+  },
+  {
+    "id": "260000005088",
+    "nome": "JOÃO ALVES",
+    "numero": "25",
+    "partido": "DEM",
+    "slogan": "ARACAJU EM BOAS MÃOS"
+  },
+  {
+    "id": "260000006352",
+    "nome": "JOÃO TARANTELLA",
+    "numero": "33",
+    "partido": "PMN",
+    "slogan": "PMN"
+  },
+  {
+    "id": "260000001689",
+    "nome": "SONIA MEIRE",
+    "numero": "50",
+    "partido": "PSOL",
+    "slogan": "LUTAR PARA TRANSFORMAR ARACAJU"
+  },
+  {
+    "id": "260000003491",
+    "nome": "VALADARES FILHO",
+    "numero": "40",
+    "partido": "PSB",
+    "slogan": "ARACAJU VAI RENOVAR"
+  },
+  {
+    "id": "260000005540",
+    "nome": "VERA LÚCIA",
+    "numero": "16",
+    "partido": "PSTU",
+    "slogan": "PSTU"
+  }
+]
