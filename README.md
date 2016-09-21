@@ -4,7 +4,7 @@ O TSE(Tribunal Superior Eleitoral) libera dados sobre todas as candidaturas no B
 é muito interessante, a de doações, onde podemos ver quem são aqueles que financiam os políticos.
 
 Partindo desse ponto, esse projeto é para fornecer um comparador de doações de campanha entre candidatos a prefeito
-do Rio de Janeiro, facilitando visualizar diferenças na forma como cada um está bancando sua campanha.
+de Aracaju, facilitando visualizar diferenças na forma como cada um está bancando sua campanha.
 
 # Detalhes técnicos
 
