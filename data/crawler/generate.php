@@ -8,12 +8,14 @@ include_once './Doacao.php';
 $arquivo_processado = 'candidatos_dados_processados.json';
 
 /**
- * Códigos das cidades podem ser vistos na URL abaixo(atenção ao código do
- * estado):
- * http://divulgacandcontas.tse.jus.br/divulga/rest/v1/eleicao/buscar/RJ/2/municipios
+ * Para alterar para outras cidades, leia as intruções em
+ * https://github.com/pedrorocha-net/eleicoes2016-rj-comparadoacoes
  */
-$codigo_cidade = 31054; // Aracaju-SE
-$Cidade = new Cidade($codigo_cidade);
+$ano = 2016;
+$cidade_id = 31054; // Aracaju - SE
+$eleicao_id = 2; // 2016
+$cargo_id = 11; // Prefeito
+$Cidade = new Cidade($ano, $cidade_id, $eleicao_id, $cargo_id);
 
 // Apagar conteúdo sobre candidatos
 file_put_contents('../' . $arquivo_processado, '');
@@ -21,20 +23,20 @@ file_put_contents('../' . $arquivo_processado, '');
 $candidatos_novo = [];
 
 foreach ($Cidade->candidatos as $candidato_obj) {
-  $Candidato = new Candidato($candidato_obj->id);
+  $Candidato = new Candidato($ano, $cidade_id, $eleicao_id, $candidato_obj->id);
 
-  $item = [];
-  $item['id'] = $candidato_obj->id;
-  $item['nome'] = $candidato_obj->nomeUrna;
-  $item['numero'] = $candidato_obj->numero;
-  $item['partido'] = $candidato_obj->partido;
-  $item['slogan'] = $candidato_obj->nomeColigacao;
-  $item['contribuicoesFinanceirasTotal'] = 0;
-  $item['contribuicoesFinanceirasQtd'] = 0;
-  $item['fundoPartidario'] = 0;
-  $item['fundoPartidarioQtd'] = 0;
-  $item['pessoasFisicas'] = $Candidato->getDadosConsolidados()->totalReceitaPF + $Candidato->getDadosConsolidados()->totalInternet;
-  $item['pessoasFisicasQtd'] = $Candidato->getDadosConsolidados()->qtdReceitaPF + $Candidato->getDadosConsolidados()->qtdInternet;
+  $item_candidato = [];
+  $item_candidato['id'] = $candidato_obj->id;
+  $item_candidato['nome'] = $candidato_obj->nomeUrna;
+  $item_candidato['numero'] = $candidato_obj->numero;
+  $item_candidato['partido'] = $candidato_obj->partido;
+  $item_candidato['slogan'] = $candidato_obj->nomeColigacao;
+  $item_candidato['contribuicoesFinanceirasTotal'] = 0;
+  $item_candidato['contribuicoesFinanceirasQtd'] = 0;
+  $item_candidato['fundoPartidario'] = 0;
+  $item_candidato['fundoPartidarioQtd'] = 0;
+  $item_candidato['pessoasFisicas'] = $Candidato->getDadosConsolidados()->totalReceitaPF + $Candidato->getDadosConsolidados()->totalInternet;
+  $item_candidato['pessoasFisicasQtd'] = $Candidato->getDadosConsolidados()->qtdReceitaPF + $Candidato->getDadosConsolidados()->qtdInternet;
   $receitas = $Candidato->getReceitas();
 
   $doacoes = [];
@@ -43,12 +45,12 @@ foreach ($Cidade->candidatos as $candidato_obj) {
     $doacao_formatada = $Doacao->formatar();
     if ($doacao_formatada['especieRecurso'] != 'Estimado') {
       if ($doacao_formatada['fonteOrigem'] == 'Fundo Partidário') {
-        $item['fundoPartidario'] += $doacao_formatada['valorReceita'];
-        $item['fundoPartidarioQtd']++;
+        $item_candidato['fundoPartidario'] += $doacao_formatada['valorReceita'];
+        $item_candidato['fundoPartidarioQtd']++;
       }
       else {
-        $item['contribuicoesFinanceirasQtd']++;
-        $item['contribuicoesFinanceirasTotal'] += $doacao_formatada['valorReceita'];
+        $item_candidato['contribuicoesFinanceirasQtd']++;
+        $item_candidato['contribuicoesFinanceirasTotal'] += $doacao_formatada['valorReceita'];
 
         if (isset($doacoes[$doacao_formatada['nomeDoador']])) {
           $doacoes[$doacao_formatada['nomeDoador']]['valorReceita'] += $doacao_formatada['valorReceita'];
@@ -59,15 +61,22 @@ foreach ($Cidade->candidatos as $candidato_obj) {
       }
     }
   }
-  $item['apoioMedio'] = $item['contribuicoesFinanceirasTotal'] / $item['contribuicoesFinanceirasQtd'];
+
+  if ($item_candidato['contribuicoesFinanceirasQtd'] > 0) {
+    $item_candidato['apoioMedio'] = $item_candidato['contribuicoesFinanceirasTotal'] / $item_candidato['contribuicoesFinanceirasQtd'];
+  }
+  else {
+    $item_candidato['apoioMedio'] = $item_candidato['contribuicoesFinanceirasTotal'];
+  }
+
   $doacoes = array_values($doacoes);
 
   usort($doacoes, function ($a, $b) {
     return $b['valorReceita'] - $a['valorReceita'];
   });
 
-  $item['maioresApoiadores'] = array_slice($doacoes, 0, 10);
-  $candidatos_novo[] = $item;
+  $item_candidato['maioresApoiadores'] = array_slice($doacoes, 0, 10);
+  $candidatos_novo[] = $item_candidato;
 }
 
 $json_code = json_encode($candidatos_novo);
