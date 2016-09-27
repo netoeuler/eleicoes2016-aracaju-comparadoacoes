@@ -31,12 +31,12 @@ foreach ($Cidade->candidatos as $candidato_obj) {
   $item_candidato['numero'] = $candidato_obj->numero;
   $item_candidato['partido'] = $candidato_obj->partido;
   $item_candidato['slogan'] = $candidato_obj->nomeColigacao;
-  $item_candidato['contribuicoesFinanceirasTotal'] = 0;
-  $item_candidato['contribuicoesFinanceirasQtd'] = 0;
+  $item_candidato['contribuicoesEstimadasTotal'] = 0;
+  $item_candidato['contribuicoesEstimadasQtd'] = 0;
+  $item_candidato['contribuicoesFinanceirasPFTotal'] = 0;
+  $item_candidato['contribuicoesFinanceirasPFQtd'] = 0;
   $item_candidato['fundoPartidario'] = 0;
   $item_candidato['fundoPartidarioQtd'] = 0;
-  $item_candidato['pessoasFisicas'] = $Candidato->getDadosConsolidados()->totalReceitaPF + $Candidato->getDadosConsolidados()->totalInternet;
-  $item_candidato['pessoasFisicasQtd'] = $Candidato->getDadosConsolidados()->qtdReceitaPF + $Candidato->getDadosConsolidados()->qtdInternet;
   $receitas = $Candidato->getReceitas();
 
   $doacoes = [];
